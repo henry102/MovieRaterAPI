@@ -14,8 +14,14 @@ class MovieViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['POST'])
     # pk means primary key
     def rate_movie(self, request, pk=None):
-        response = {'message': 'its working'}
-        return Response(response, status=status.HTTP_200_OK)
+        if 'stars' in request.data:
+            movie = Movie.objects.get(id=pk)
+            print('movie title: ', movie.title)
+            response = {'message': 'its working'}
+            return Response(response, status=status.HTTP_200_OK)
+        else:
+            response = {'message': 'You need to provide stars'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RatingViewSet(viewsets.ModelViewSet):
